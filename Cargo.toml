@@ -1,0 +1,13 @@
+[package]
+name = "ime_switcher_rs"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+lazy_static = "1.5.0"
+objc2 = "0.6.1"
+objc2-carbon = "0.3.1"
+objc2-core-foundation = "0.3.1"
+objc2-core-graphics = "0.3.1"
+objc2-foundation = "0.3.1"
+objc2-io-kit = "0.3.1"
