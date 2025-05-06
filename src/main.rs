@@ -129,7 +129,32 @@ fn switch_ime_by_simulating() {
   }
 }
 
+fn init() {
+  let key_event_mask: CGEventMask = cg_event_mask_bit(CGEventType::FlagsChanged)
+    | cg_event_mask_bit(CGEventType::KeyDown)
+    | cg_event_mask_bit(CGEventType::KeyUp);
+
+  unsafe {
+    loop {
+      let m_event_tap_ptr = CGEvent::tap_create(
+        CGEventTapLocation::SessionEventTap,
+        CGEventTapPlacement::HeadInsertEventTap,
+        CGEventTapOptions::Default,
+        key_event_mask,
+        Some(callback),
+        std::ptr::null_mut(),
+      );
+      std::thread::sleep(time::Duration::from_secs(1));
+      if m_event_tap_ptr != None {
+        return;
+      }
+    }
+  }
+}
+
 fn main() {
+  init();
+
   let key_event_mask: CGEventMask = cg_event_mask_bit(CGEventType::FlagsChanged)
     | cg_event_mask_bit(CGEventType::KeyDown)
     | cg_event_mask_bit(CGEventType::KeyUp);
