@@ -1,3 +1,4 @@
+use core::time;
 use objc2_core_foundation::{CFMachPort, CFRunLoop, kCFRunLoopCommonModes};
 use objc2_core_graphics::{
   CGEvent, CGEventField, CGEventFlags, CGEventMask, CGEventSource, CGEventSourceStateID,
@@ -103,7 +104,6 @@ unsafe extern "C-unwind" fn callback(
 }
 
 fn switch_ime_by_simulating() {
-  println!("switch!!!!!!!!!!!!!!!!!!!!!!!");
   unsafe {
     let src_ref = CGEventSource::new(CGEventSourceStateID::HIDSystemState);
     let src = src_ref.as_deref();
