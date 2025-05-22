@@ -160,14 +160,22 @@ fn main() {
     | cg_event_mask_bit(CGEventType::KeyUp);
 
   unsafe {
-    let m_event_tap_ptr = CGEvent::tap_create(
-      CGEventTapLocation::SessionEventTap,
-      CGEventTapPlacement::HeadInsertEventTap,
-      CGEventTapOptions::Default,
-      key_event_mask,
-      Some(callback),
-      std::ptr::null_mut(),
-    );
+    let m_event_tap_ptr = {
+      loop {
+        let m_event_tap_ptr = CGEvent::tap_create(
+          CGEventTapLocation::SessionEventTap,
+          CGEventTapPlacement::HeadInsertEventTap,
+          CGEventTapOptions::Default,
+          key_event_mask,
+          Some(callback),
+          std::ptr::null_mut(),
+        );
+        std::thread::sleep(time::Duration::from_secs(1));
+        if m_event_tap_ptr != None {
+          break m_event_tap_ptr;
+        }
+      }
+    };
     let m_event_tap_ptr = m_event_tap_ptr.as_deref();
     let current_run_loop = CFRunLoop::current().expect("");
     let current_run_loop = current_run_loop.deref();
